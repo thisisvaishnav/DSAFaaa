@@ -7,6 +7,7 @@ import { redis } from "./core/queue/redis.client";
 import { socketManager } from "./core/socket/socket.manager";
 import { corsConfig } from "./config/cors.config";
 import { socketConfig } from "./config/socket.config";
+import { SERVER_PORT } from "./config/env.config";
 import { authRouter } from "./features/auth/auth.routes";
 
 const app = express();
@@ -18,6 +19,6 @@ const server = http.createServer(app);
 
 export const io = socketManager.init(server);
 
-server.listen(3000, () => {
-  console.log(`Server running on http://localhost:3000`);
+server.listen(SERVER_PORT, () => {
+  console.log(`Server running on http://localhost:${SERVER_PORT}`);
 });

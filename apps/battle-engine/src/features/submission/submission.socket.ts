@@ -14,7 +14,7 @@ const submitSchema = z.object({
 export const registerSubmissionHandlers = (socket: TypedSocket): void => {
   const { userId } = socket.data;
 
-  socket.on('submission:submit', async (data) => {
+  socket.on('match:submit-code', async (data) => {
     try {
       const parsed = submitSchema.safeParse(data);
       if (!parsed.success) {
@@ -40,7 +40,7 @@ export const registerSubmissionHandlers = (socket: TypedSocket): void => {
       );
 
       // 3. Acknowledge back to the client
-      emitToUser(userId, 'submission:queued', {
+      emitToUser(userId, 'match:submission-result', {
         submissionId: submission.id,
         questionId: submission.questionId,
         status: submission.status,
