@@ -2,7 +2,7 @@
 import './config/env.config';
 
 import { submissionWorker } from './workers/submission.worker';
-import { connection } from '@repo/queue';
+import { connection, SUBMISSION_QUEUE } from '@repo/queue';
 
 // ─── Graceful Shutdown ───────────────────────────────────────────────
 
@@ -31,6 +31,6 @@ process.on('SIGTERM', () => handleShutdown('SIGTERM'));
 
 console.log('──────────────────────────────────────');
 console.log('🚀 DSADash Worker started');
-console.log(`📋 Listening on queue: submission:process`);
+console.log(`📋 Listening on queue: ${SUBMISSION_QUEUE}`);
 console.log(`⚡ Concurrency: ${submissionWorker.opts.concurrency}`);
 console.log('──────────────────────────────────────');

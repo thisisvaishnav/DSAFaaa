@@ -4,9 +4,8 @@ import cors from "cors";
 
 import { db } from "./core/database/db.client";
 import { redis } from "./core/queue/redis.client";
-import { socketManager } from "./core/socket/socket.manager";
+import { initSocket } from "./core/socket/socket.manager";
 import { corsConfig } from "./config/cors.config";
-import { socketConfig } from "./config/socket.config";
 import { SERVER_PORT } from "./config/env.config";
 import { authRouter } from "./features/auth/auth.routes";
 
@@ -17,7 +16,7 @@ app.use(authRouter);
 
 const server = http.createServer(app);
 
-export const io = socketManager.init(server);
+export const io = initSocket(server);
 
 server.listen(SERVER_PORT, () => {
   console.log(`Server running on http://localhost:${SERVER_PORT}`);

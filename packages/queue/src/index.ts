@@ -21,7 +21,7 @@ export const createRedisConnection = (): Redis => {
 };
 
 // ─── Queue Names ─────────────────────────────────────────────────────
-export const SUBMISSION_QUEUE = 'submission:process';
+export const SUBMISSION_QUEUE = 'submission.process';
 
 // ─── Redis Keys (matchmaking) ───────────────────────────────────────
 export const WAITING_LIST = 'match:waiting';
