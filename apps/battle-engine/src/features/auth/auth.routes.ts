@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { handleAuthRequest, handleGetSession, requireAuth } from './auth.controller';
 
-const authRouter = Router();
+const authRouter: Router = Router();
 
 // ─── Better Auth catch-all (sign-up, sign-in, OAuth, etc.) ──────────
 // All requests to /api/auth/* are forwarded to Better Auth's handler

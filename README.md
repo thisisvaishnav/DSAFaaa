@@ -16,7 +16,7 @@ A real-time competitive DSA (Data Structures & Algorithms) battle platform where
 DSADash/
 ├── apps/
 │   ├── web/                        # Next.js frontend
-│   ├── battle-engine/              # Express + Socket.IO backend
+│   ├── server/                     # Express + Socket.IO backend
 │   │   └── src/
 │   │       ├── config/             # Configuration
 │   │       │   ├── env.config.ts   # Zod-validated environment variables
@@ -119,7 +119,7 @@ Create a `.env` file in `packages/db/`:
 DATABASE_URL="postgresql://user:password@host:port/database?sslmode=require"
 ```
 
-Create a `.env` file in `apps/battle-engine/` (or root):
+Create a `.env` file in `apps/server/` (or root):
 
 ```env
 NODE_ENV=development
@@ -159,7 +159,7 @@ pnpm dev
 
 # Run specific app
 pnpm dev --filter=web
-pnpm dev --filter=battle-engine
+pnpm dev --filter=server
 ```
 
 ### Build

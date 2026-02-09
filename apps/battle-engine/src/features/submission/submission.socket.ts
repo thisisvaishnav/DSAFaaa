@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { TypedSocket } from '../../core/socket/socket.types';
 import { emitToUser } from '../../core/socket/socket.manager';
 import { createSubmission } from './submission.service';
+import { submissionQueue } from '@repo/queue';
 
 const submitSchema = z.object({
   matchId: z.string().min(1, 'matchId is required'),
@@ -13,7 +14,7 @@ const submitSchema = z.object({
 export const registerSubmissionHandlers = (socket: TypedSocket): void => {
   const { userId } = socket.data;
 
-  socket.on('submission:submit', async (data) => {
+  socket.on('match:submit-code', async (data) => {
     try {
       const parsed = submitSchema.safeParse(data);
       if (!parsed.success) {
@@ -21,8 +22,25 @@ export const registerSubmissionHandlers = (socket: TypedSocket): void => {
         return;
       }
 
+      // 1. Persist the submission with status "pending"
       const submission = await createSubmission(userId, parsed.data);
-      emitToUser(userId, 'submission:queued', {
+
+      // 2. Enqueue for the worker to process (sandboxed code execution)
+      await submissionQueue.add(
+        'process-submission',
+        {
+          submissionId: submission.id,
+          userId,
+          matchId: parsed.data.matchId,
+          questionId: parsed.data.questionId,
+          code: parsed.data.code,
+          language: parsed.data.language,
+        },
+        { jobId: submission.id },
+      );
+
+      // 3. Acknowledge back to the client
+      emitToUser(userId, 'match:submission-result', {
         submissionId: submission.id,
         questionId: submission.questionId,
         status: submission.status,
