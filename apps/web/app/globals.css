@@ -12,6 +12,10 @@
   --color-success: #22c55e;
   --color-danger: #ef4444;
   --color-danger-hover: #dc2626;
+  --color-warning: #f59e0b;
+  --color-warning-hover: #d97706;
+  --color-surface: #161616;
+  --color-nav: #0f0f0f;
   --font-sans: var(--font-geist-sans), system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), monospace;
 }
