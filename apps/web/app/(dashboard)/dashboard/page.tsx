@@ -12,6 +12,8 @@ import {
   ArrowRight,
   X,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import questionsData from "../../data/questions.json";
 
 type CardStatus = "active" | "locked";
 
@@ -191,23 +193,44 @@ const FriendCard = ({ isOpen, onClose }: FriendCardProps) => {
    ──────────────────────────────────────────────────────────── */
 
 const DashboardPage = () => {
+  const router = useRouter();
   const [isFriendCardOpen, setIsFriendCardOpen] = useState(false);
 
   const handleCardClick = (card: MatchCard) => {
-    if (card.status === "locked") return;
+    if (card.status === "locked") {
+      return;
+    }
 
     switch (card.action) {
       case "matchmaking":
         // Future: starts matchmaking
-        break;
-      case "navigate":
-        // Future: navigates to /code
-        break;
+        return;
+      case "navigate": {
+        if (card.id !== "practice-solo") {
+          return;
+        }
+
+        const questionsArray = Array.isArray(questionsData) ? questionsData : [];
+
+        if (questionsArray.length === 0) {
+          return;
+        }
+
+        const randomIndex = Math.floor(Math.random() * questionsArray.length);
+        const randomQuestion = questionsArray[randomIndex] as { id: number };
+
+        if (!randomQuestion?.id) {
+          return;
+        }
+
+        router.push(`/code/${randomQuestion.id}`);
+        return;
+      }
       case "friend-card":
         setIsFriendCardOpen(true);
-        break;
+        return;
       default:
-        break;
+        return;
     }
   };
 
