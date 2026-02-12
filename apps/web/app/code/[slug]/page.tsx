@@ -615,7 +615,7 @@ const Page = () => {
 
         <Separator className="w-1 bg-slate-800/70 hover:bg-slate-700 transition-colors" />
 
-        {/* ---------- RIGHT PANEL ----------*/}
+        {/* ---------- RIGHT PANEL (Editor + Testcase) ----------*/}
         <Panel defaultSize={55} minSize={30}>
           <section className="flex h-full flex-col">
             {/* Editor Header */}
@@ -648,38 +648,49 @@ const Page = () => {
               </div>
             </div>
 
-            {/* Editor */}
+            {/* Right side vertical split: Code (top) + Testcase (bottom) */}
             <div className="flex-1">
-              <Editor
-                theme="vs-dark"
-                language={language === "cpp" ? "cpp" : language}
-                value={code}
-                onChange={(v) => saveCode(v ?? "")}
-                options={{
-                  fontSize: 13,
-                  minimap: { enabled: false },
-                  automaticLayout: true,
-                  scrollBeyondLastLine: false,
-                }}
-              />
-            </div>
-
-            {/* Console */}
-            <div className="h-[180px] border-t border-slate-800 bg-slate-950">
-              <div className="flex items-center gap-2 px-4 py-2 text-xs border-b border-slate-800">
-                <AlertCircle size={14} />
-                <span>Console</span>
-              </div>
-
-              <div className="p-4 text-xs whitespace-pre-wrap">
-                {runResult.status === "running" && (
-                  <div className="flex items-center gap-2 text-sky-400">
-                    <Loader2 className="animate-spin" size={14} />
-                    {runResult.message}
+              <Group orientation="vertical" className="flex h-full w-full flex-col">
+                {/* Top: Code editor */}
+                <Panel defaultSize={70} minSize={40}>
+                  <div className="h-full">
+                    <Editor
+                      theme="vs-dark"
+                      language={language === "cpp" ? "cpp" : language}
+                      value={code}
+                      onChange={(v) => saveCode(v ?? "")}
+                      options={{
+                        fontSize: 13,
+                        minimap: { enabled: false },
+                        automaticLayout: true,
+                        scrollBeyondLastLine: false,
+                      }}
+                    />
                   </div>
-                )}
-                {runResult.status !== "running" && runResult.message}
-              </div>
+                </Panel>
+
+                <Separator className="h-1 bg-slate-800/70 hover:bg-slate-700 transition-colors" />
+
+                {/* Bottom: Testcase / Result panel */}
+                <Panel defaultSize={30} minSize={15}>
+                  <div className="h-full border-t border-slate-800 bg-slate-950 flex flex-col">
+                    <div className="flex items-center gap-2 px-4 py-2 text-xs border-b border-slate-800">
+                      <AlertCircle size={14} />
+                      <span>Testcase / Result</span>
+                    </div>
+
+                    <div className="flex-1 p-4 text-xs whitespace-pre-wrap overflow-auto">
+                      {runResult.status === "running" && (
+                        <div className="flex items-center gap-2 text-sky-400">
+                          <Loader2 className="animate-spin" size={14} />
+                          {runResult.message}
+                        </div>
+                      )}
+                      {runResult.status !== "running" && runResult.message}
+                    </div>
+                  </div>
+                </Panel>
+              </Group>
             </div>
           </section>
         </Panel>
