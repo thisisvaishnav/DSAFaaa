@@ -8,11 +8,14 @@ import { initSocket } from "./core/socket/socket.manager";
 import { corsConfig } from "./config/cors.config";
 import { SERVER_PORT } from "./config/env.config";
 import { authRouter } from "./features/auth/auth.routes";
+import { submissionRouter } from "./features/submission/submission.routes";
 
 const app = express();
 
 app.use(cors(corsConfig));
+app.use(express.json());
 app.use(authRouter);
+app.use(submissionRouter);
 
 const server = http.createServer(app);
 

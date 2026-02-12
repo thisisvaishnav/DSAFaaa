@@ -26,9 +26,10 @@ model User {
   FriendsB          Friend[]            @relation("FriendsB")
   SentMessages      Message[]           @relation("SentMessages")
   ReceivedMessages  Message[]           @relation("ReceivedMessages")
-  Submissions       Submission[]        @relation("Submissions")
-  Matches           MatchParticipant[]
-  LeaderboardEntry  LeaderboardEntry?
+  Submissions         Submission[]         @relation("Submissions")
+  PracticeSubmissions PracticeSubmission[]
+  Matches             MatchParticipant[]
+  LeaderboardEntry    LeaderboardEntry?
 }
 
 model Account {
@@ -78,6 +79,22 @@ model Question {
   question          String
   testcases         Json
   createdAt         DateTime      @default(now())
+}
+
+model PracticeSubmission {
+  id         String   @id @default(cuid())
+  userId     String
+  questionId Int
+  code       String
+  language   String
+  status     String
+  runtimeMs  Int?
+  memoryMb   Int?
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, questionId])
 }
 
 model Submission {
