@@ -102,7 +102,7 @@ const Page = () => {
 
   const [activeTab, setActiveTab] = useState<Tab>("Description");
   const [language, setLanguage] = useState<SupportedLanguage>("javascript");
-  const [code, setCode] = useState("");
+ 
   const [runResult, setRunResult] = useState<RunResult>({
     status: "idle",
     message: "Run your code to see output.",
@@ -250,6 +250,13 @@ const Page = () => {
       message: `Accepted\nRuntime: ${submission.runtimeMs} ms\nMemory: ${submission.memoryMb} MB`,
     });
   };
+
+    /* -------------------- Code Output -------------------- */
+
+
+  const [code, setCode] = useState("");
+  
+
   /* -------------------- Render -------------------- */
 
   return (
